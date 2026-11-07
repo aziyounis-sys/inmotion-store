@@ -251,3 +251,6 @@ footer .slogan{color:var(--gold);font-family:var(--head);text-transform:uppercas
 .women h2{font-size:clamp(36px,4.6vw,60px);color:var(--navy)}
 .women p{color:#3d4250;margin:18px 0 26px;max-width:460px}
 @media (max-width:760px){.women-grid{grid-template-columns:1fr;gap:24px}}
+
+img.wide{object-fit:contain!important;background:var(--sand)}
+.card .ph img.wide,.gallery .main img.wide{padding:0}

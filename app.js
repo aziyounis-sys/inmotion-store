@@ -59,7 +59,7 @@
       sizes: (r.sizes || "").split(/[|/;]/).map(s => s.trim()).filter(Boolean),
       colours: (r.colour || r.color || "").split(/[|/;]/).map(s => s.trim()).filter(Boolean),
       colour: (r.colour || r.color || "").split(/[|/;]/).map(s => s.trim()).filter(Boolean).join(" / "),
-      images: [r.image, r.image2, r.image3].map(img).filter(Boolean),
+      images: [r.image, r.image2, r.image3, r.image4, r.image5, r.image6].map(img).filter(Boolean),
       tag: r.tag || "", featured: yes(r.featured),
       inStock: r.in_stock === undefined || r.in_stock === "" ? true : yes(r.in_stock),
       hidden: yes(r.hidden),
@@ -78,7 +78,8 @@
     let rows;
     try { rows = S.sheetUrl ? await tryLoad(sheetCsvUrl(S.sheetUrl)) : await tryLoad("products.csv"); }
     catch (e) { console.warn("Product sheet failed, using products.csv", e); rows = await tryLoad("products.csv").catch(() => []); }
-    return rows.map(normalise).filter(p => !p.hidden && p.name);
+    const list = rows.map(normalise).filter(p => !p.hidden && p.name);
+    return [...list.filter(p => p.inStock), ...list.filter(p => !p.inStock)];
   }
 
   /* ---------- cart ---------- */
@@ -231,7 +232,7 @@
       const msg = [`Hi In Motion, I'd like to order:`, ``,
         ...lines().map(l => `• ${l.qty} x ${l.p.name}${l.col ? " (" + l.col + ")" : ""}${l.size && !/one size/i.test(l.size) ? " size " + l.size : ""} = ${money(l.p.price * l.qty)}`),
         ``, `Subtotal: ${money(sub)}`, `Delivery: ${d.label} ${fee ? money(fee) : "(free)"}`, `Total: ${money(sub + fee)}`, ``,
-        `Name: ${name}`, $("#addrWrap").style.display === "none" ? "" : `Address: ${$("#cAddr").value.trim()}`].filter((x, i, a) => x !== "" || a[i - 1] !== "").join("\n");
+        `Name: ${name}`, $("#addrWrap").style.display === "none" ? "" : `Address: ${$("#cAddr").value.trim()}`].filter((x, i, a) => x !== "" || a[i - 1] !== "").join("\n").trim();
       const url = waLink(msg);
       const w = window.open(url, "_blank");
       if (!w) location.href = url;
@@ -334,6 +335,12 @@
       };
     }
   };
+
+  // landscape photos (e.g. shoes) are shown whole instead of cropped
+  document.addEventListener("load", e => {
+    const i = e.target;
+    if (i.tagName === "IMG" && i.naturalWidth > i.naturalHeight * 1.05) i.classList.add("wide");
+  }, true);
 
   layout();
   renderCart();
