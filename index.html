@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IN MOTION | Premium athletic wear, Cape Town</title><meta name="description" content="In Motion: premium athletic wear from Cape Town. Gym, running, fight sports and more.">
+<link rel="icon" href="images/logo.svg"><meta property="og:image" content="images/hero.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head>
+<body data-page="home">
+<section class="hero"><div class="hero-grid">
+  <div class="hero-copy">
+    <div class="eyebrow">Cape Town · Collection 01</div>
+    <h1>Built for the <em>work</em>.<br>Made to move.</h1>
+    <p>Premium performance wear for the gym, the road, the mat and the ring. Premium performance. Honest price.</p>
+    <div class="btns"><a class="btn btn-gold" href="shop.html">Shop now</a><a class="btn btn-line" href="#club">The Thursday Club</a></div>
+  </div>
+  <div class="hero-img" role="img" aria-label="Athlete wearing the In Motion training zip hoodie"></div>
+</div></section>
+
+<div class="strip"><div class="wrap">
+  <div class="item"><b>Performance fabric</b>Breathable, quick-dry</div>
+  <div class="item"><b>Designed in Cape Town</b>Local and proud</div>
+  <div class="item"><b>Order on WhatsApp</b>Quick and personal</div>
+  <div class="item"><b>Collect or courier</b>Anywhere in SA</div>
+</div></div>
+
+<section class="block"><div class="wrap">
+  <div class="sec-head"><h2>New arrivals</h2><a href="shop.html">View all</a></div>
+  <div class="grid" id="newArrivals"></div>
+</div></section>
+
+<section class="banner" style="background-image:url(images/hoodie-cream.jpg)"><div class="wrap">
+  <div class="eyebrow">The statement range</div>
+  <h2>Results come from the work you do.</h2>
+  <p>Heavyweight hoodies and performance tees with the words that keep us training.</p>
+  <div class="btns"><a class="btn btn-gold" href="shop.html?c=Hoodies">Shop hoodies</a><a class="btn btn-line" href="shop.html?c=Tops">Shop tees</a></div>
+</div></section>
+
+<section class="block"><div class="wrap">
+  <div class="sec-head"><h2>Shop by category</h2></div>
+  <div class="cats">
+    <a class="cat" href="shop.html?c=Tops"><img src="images/tee-navy.jpg" alt="" loading="lazy"><span>Tops</span></a>
+    <a class="cat" href="shop.html?c=Hoodies"><img src="images/hoodie-navy.jpg" alt="" loading="lazy"><span>Hoodies</span></a>
+    <a class="cat" href="shop.html?c=Accessories"><img src="images/cap-cream.jpg" alt="" loading="lazy"><span>Accessories</span></a>
+  </div>
+</div></section>
+
+<section class="block" style="padding-top:0"><div class="wrap">
+  <div class="sec-head"><h2>Training essentials</h2><a href="shop.html">View all</a></div>
+  <div class="grid" id="essentials"></div>
+</div></section>
+
+<section class="block club" id="club"><div class="wrap">
+  <div>
+    <div class="eyebrow" style="color:var(--gold-d)">The Thursday Club</div>
+    <h2>It started with one session a week.</h2>
+    <p>In Motion grew out of a weekly Thursday training session in Cape Town. Train solo or with the crew: gym, running, fight sports, cycling and more. Discipline, consistency and showing up for each other.</p>
+    <a class="btn btn-dark" id="joinClub" href="#">Join a session</a>
+  </div>
+  <div class="club-card"><div class="big">Every<br>Thursday.</div><div class="small">Rooted in Faith. Powered in Motion.</div><img src="images/logo.svg" alt=""></div>
+</div></section>
+<script>document.getElementById('joinClub').onclick=function(e){e.preventDefault();window.open('https://wa.me/'+(STORE.whatsapp||'').replace(/\D/g,'')+'?text='+encodeURIComponent('Hi In Motion, I would like to join a Thursday session.'),'_blank')}</script>
+<script src="config.js"></script><script src="app.js"></script></body></html>

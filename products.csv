@@ -1,0 +1,9 @@
+id,name,category,gender,price,sale_price,sizes,colour,image,image2,tag,featured,in_stock,description
+tee-navy,Performance Tee,Tops,Unisex,400,,S|M|L|XL|XXL,Navy,images/tee-navy.jpg,,New,yes,yes,"Moisture-wicking performance tee in deep navy. Light, breathable and quick-drying, with a tonal gold mark on the chest. Built for the gym, the road and the mat."
+tee-invoice,The Invoice Tee,Tops,Unisex,400,,S|M|L|XL|XXL,Navy,images/tee-invoice-back.jpg,images/tee-invoice-front.jpg,Bestseller,yes,yes,Everybody wants to be great until they see the invoice. Our first drop: navy performance tee with the full back print in gold and white.
+longsleeve-navy,Performance Long Sleeve,Tops,Unisex,550,,S|M|L|XL|XXL,Navy,,,New,no,yes,"Moisture-wicking long-sleeve performance top in navy. Light enough for a 10 km run, warm enough for early mornings. Tonal gold mark on the chest."
+hoodie-navy,Essential Hoodie,Hoodies,Unisex,900,,S|M|L|XL|XXL,Navy,images/hoodie-navy.jpg,,New,yes,yes,"Heavyweight brushed-fleece hoodie in navy. Clean front, quiet mark, relaxed fit for warm-ups and cold Cape Town mornings."
+hoodie-cream,The Results Hoodie,Hoodies,Unisex,900,,S|M|L|XL|XXL,Cream,images/hoodie-cream.jpg,images/hoodie-cream-back.jpg,New,yes,yes,Don't cry over the results you didn't get for the work you didn't do. Cream heavyweight hoodie with the statement back print.
+zip-charcoal,Training Zip Hoodie,Hoodies,Men,900,,S|M|L|XL,Charcoal,images/zip-charcoal.jpg,,New,yes,yes,"Slim-fit full-zip training layer in charcoal with stretch fabric, thumb-friendly cuffs and a chest mark. Made to move."
+cap-cream,Signature Cap,Accessories,Unisex,350,,One size,Cream,images/cap-cream.jpg,,,yes,yes,Six-panel cotton cap in cream with the full-colour embroidered mark and adjustable strap.
+bottle,Training Water Bottle,Accessories,Unisex,300,,,,,,,no,yes,"Reusable training bottle with the In Motion mark. Made for the gym bag, the mat and the long run."
