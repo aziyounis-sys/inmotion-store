@@ -57,7 +57,8 @@
       name, category: r.category || "Other", gender: r.gender || "Unisex",
       price: sale && sale < price ? sale : price, was: sale && sale < price ? price : 0,
       sizes: (r.sizes || "").split(/[|/;]/).map(s => s.trim()).filter(Boolean),
-      colour: r.colour || r.color || "",
+      colours: (r.colour || r.color || "").split(/[|/;]/).map(s => s.trim()).filter(Boolean),
+      colour: (r.colour || r.color || "").split(/[|/;]/).map(s => s.trim()).filter(Boolean).join(" / "),
       images: [r.image, r.image2, r.image3].map(img).filter(Boolean),
       tag: r.tag || "", featured: yes(r.featured),
       inStock: r.in_stock === undefined || r.in_stock === "" ? true : yes(r.in_stock),
@@ -88,13 +89,16 @@
   let PRODUCTS = [];
   const find = id => PRODUCTS.find(p => p.id === id);
 
-  function addToCart(id, size, qty = 1) {
+  function addToCart(id, size, qty = 1, colour = "") {
     const p = find(id); if (!p || !p.inStock) return;
-    const line = cart.find(l => l.id === id && l.size === size);
-    if (line) line.qty += qty; else cart.push({ id, size, qty });
+    colour = colour || (p.colours.length === 1 ? p.colours[0] : "");
+    const line = cart.find(l => l.id === id && l.size === size && (l.colour || "") === colour);
+    if (line) line.qty += qty; else cart.push({ id, size, qty, colour });
     saveCart(); openDrawer(); toast(p.name + " added to bag");
   }
-  const lines = () => cart.map(l => ({ ...l, p: find(l.id) })).filter(l => l.p);
+  const lines = () => cart.map(l => ({ ...l, p: find(l.id) })).filter(l => l.p).map(l => ({
+    ...l, col: l.colour || l.p.colour, img: l.p.images[Math.max(0, l.p.colours.indexOf(l.colour))] || l.p.images[0] || "images/logo.svg"
+  }));
   const subtotal = () => lines().reduce((s, l) => s + l.p.price * l.qty, 0);
 
   /* ---------- layout ---------- */
@@ -146,7 +150,7 @@
             <div class="slogan">${esc(S.slogan)}</div>
             <p>A fitness, sporting movement and premium athletic wear brand from ${esc(S.location)}.</p>${social()}</div>
           <div><h4>Shop</h4><ul><li><a href="shop.html">Shop all</a></li><li><a href="shop.html?g=Men">Men</a></li><li><a href="shop.html?g=Women">Women</a></li><li><a href="shop.html?c=Hoodies">Hoodies</a></li><li><a href="shop.html?c=Accessories">Accessories</a></li></ul></div>
-          <div><h4>Help</h4><ul><li><a href="${waLink("Hi In Motion, I have a question.")}" target="_blank" rel="noopener">WhatsApp us</a></li><li><a href="mailto:${esc(S.email)}">${esc(S.email)}</a></li>${S.instagram ? `<li><a href="${esc(S.instagram)}" target="_blank" rel="noopener">Instagram</a></li>` : ""}${S.facebook ? `<li><a href="${esc(S.facebook)}" target="_blank" rel="noopener">Facebook</a></li>` : ""}<li>Sizes & exchanges: message us</li></ul></div>
+          <div><h4>Help</h4><ul><li><a href="${waLink("Hi In Motion, I have a question.")}" target="_blank" rel="noopener">WhatsApp us</a></li>${S.email ? `<li><a href="mailto:${esc(S.email)}">${esc(S.email)}</a></li>` : ""}${S.instagram ? `<li><a href="${esc(S.instagram)}" target="_blank" rel="noopener">Instagram</a></li>` : ""}${S.facebook ? `<li><a href="${esc(S.facebook)}" target="_blank" rel="noopener">Facebook</a></li>` : ""}<li>Sizes & exchanges: message us</li></ul></div>
           <div><h4>Join the movement</h4><p>New drops and Thursday sessions, first.</p>
             <form class="news" id="news"><input type="email" required placeholder="Your email"><button>Join</button></form></div>
         </div>
@@ -178,6 +182,7 @@
   }
 
   /* ---------- bag + checkout ---------- */
+  const saved = k => { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
   function renderCart() {
     const n = cart.reduce((s, l) => s + l.qty, 0);
     const c = $("#count"); if (c) { c.textContent = n; c.hidden = !n; }
@@ -188,8 +193,8 @@
       $("#drawerFoot").innerHTML = ""; return;
     }
     body.innerHTML = ls.map((l, i) => `<div class="line">
-      <img src="${esc(l.p.images[0] || "images/logo.svg")}" alt="">
-      <div><h4>${esc(l.p.name)}</h4><div class="sub">${[l.p.colour, l.size].filter(Boolean).map(esc).join(" · ")}</div>
+      <img src="${esc(l.img)}" alt="">
+      <div><h4>${esc(l.p.name)}</h4><div class="sub">${[l.col, l.size].filter(Boolean).map(esc).join(" · ")}</div>
         <div class="qty"><button data-q="${i}" data-d="-1" aria-label="Less">−</button><span>${l.qty}</span><button data-q="${i}" data-d="1" aria-label="More">+</button></div><br>
         <button class="remove" data-r="${i}">Remove</button></div>
       <div style="font-weight:600">${money(l.p.price * l.qty)}</div></div>`).join("");
@@ -197,8 +202,8 @@
     const sub = subtotal();
     $("#drawerFoot").innerHTML = `
       <div class="field"><label>Delivery</label><select id="del">${del.map((d, i) => `<option value="${i}">${esc(d.label)}${d.price && !(S.freeDeliveryOver && sub >= S.freeDeliveryOver) ? " · " + money(d.price) : " · Free"}</option>`).join("")}</select></div>
-      <div class="field"><label>Your name</label><input id="cName" autocomplete="name"></div>
-      <div class="field" id="addrWrap"><label>Delivery address</label><textarea id="cAddr" autocomplete="street-address"></textarea></div>
+      <div class="field"><label for="cName">Your name</label><input id="cName" autocomplete="name" value="${esc(saved("inmotion_name"))}"></div>
+      <div class="field" id="addrWrap"><label for="cAddr">Delivery address</label><textarea id="cAddr" autocomplete="street-address" placeholder="Street, suburb, city, postal code">${esc(saved("inmotion_addr"))}</textarea></div>
       <div class="row"><span>Subtotal</span><span>${money(sub)}</span></div>
       <div class="row"><span>Delivery</span><span id="delAmt"></span></div>
       <div class="row total"><span>Total</span><span id="tot"></span></div>
@@ -220,11 +225,20 @@
       const { d, fee } = upd();
       const name = $("#cName").value.trim();
       if (!name) { $("#cName").focus(); toast("Please add your name"); return; }
+      const needAddr = $("#addrWrap").style.display !== "none";
+      if (needAddr && $("#cAddr").value.trim().length < 6) { $("#cAddr").focus(); toast("Please add your delivery address"); return; }
+      try { localStorage.setItem("inmotion_name", name); localStorage.setItem("inmotion_addr", $("#cAddr").value.trim()); } catch (e) {}
       const msg = [`Hi In Motion, I'd like to order:`, ``,
-        ...lines().map(l => `• ${l.qty} x ${l.p.name}${l.p.colour ? " (" + l.p.colour + ")" : ""}${l.size && !/one size/i.test(l.size) ? " size " + l.size : ""} = ${money(l.p.price * l.qty)}`),
+        ...lines().map(l => `• ${l.qty} x ${l.p.name}${l.col ? " (" + l.col + ")" : ""}${l.size && !/one size/i.test(l.size) ? " size " + l.size : ""} = ${money(l.p.price * l.qty)}`),
         ``, `Subtotal: ${money(sub)}`, `Delivery: ${d.label} ${fee ? money(fee) : "(free)"}`, `Total: ${money(sub + fee)}`, ``,
         `Name: ${name}`, $("#addrWrap").style.display === "none" ? "" : `Address: ${$("#cAddr").value.trim()}`].filter((x, i, a) => x !== "" || a[i - 1] !== "").join("\n");
-      window.open(waLink(msg), "_blank");
+      const url = waLink(msg);
+      const w = window.open(url, "_blank");
+      if (!w) location.href = url;
+      $("#drawerFoot").innerHTML = `<div class="done"><h4>Almost done</h4><p>Your order is ready in WhatsApp. Press <b>send</b> there and we will confirm stock, payment and delivery with you.</p>
+        <a class="btn btn-wa" style="width:100%" href="${url}" target="_blank" rel="noopener">Open WhatsApp again</a>
+        <button class="btn btn-line-dark" style="width:100%;margin-top:10px" id="newOrder">Clear bag</button></div>`;
+      $("#newOrder").onclick = () => { cart = []; saveCart(); closeAll(); toast("Thank you for your order"); };
     };
   }
   document.addEventListener("click", e => {
@@ -234,7 +248,7 @@
     if (a) {
       e.preventDefault();
       const p = find(a.dataset.add);
-      if (p.sizes.length > 1) location.href = "product.html?id=" + encodeURIComponent(p.id);
+      if (p.sizes.length > 1 || p.colours.length > 1) location.href = "product.html?id=" + encodeURIComponent(p.id);
       else addToCart(p.id, p.sizes[0] || "");
     }
   });
@@ -245,8 +259,8 @@
     const url = "product.html?id=" + encodeURIComponent(p.id);
     return `<article class="card">
       <div class="phwrap"><a class="ph" href="${url}">${badge}<img src="${esc(p.images[0] || "images/logo.svg")}" alt="${esc(p.name)}" loading="lazy">${p.images[1] ? `<img class="alt" src="${esc(p.images[1])}" alt="" loading="lazy">` : ""}</a>
-      ${p.inStock ? `<div class="quick"><button class="btn" data-add="${esc(p.id)}">${p.sizes.length > 1 ? "Choose size" : "Add to bag"}</button></div>` : ""}</div>
-      <a class="meta" href="${url}"><h3>${esc(p.name)}</h3><div class="sub">${esc([p.colour, p.gender !== "Unisex" ? p.gender : ""].filter(Boolean).join(" · "))}</div>
+      ${p.inStock ? `<div class="quick"><button class="btn" data-add="${esc(p.id)}">${p.sizes.length > 1 ? "Choose size" : p.colours.length > 1 ? "Choose colour" : "Add to bag"}</button></div>` : ""}</div>
+      <a class="meta" href="${url}"><h3>${esc(p.name)}</h3><div class="sub">${esc([p.colours.length > 1 ? p.colours.length + " colours" : p.colour, p.gender !== "Unisex" ? p.gender : ""].filter(Boolean).join(" · "))}</div>
       <div class="price">${p.was ? `<span class="now">${money(p.price)}</span><s>${money(p.was)}</s>` : money(p.price)}</div></a></article>`;
   }
 
@@ -282,7 +296,7 @@
       const root = $("#pdp");
       if (!p) { root.innerHTML = `<div class="msg">Product not found. <a href="shop.html" style="text-decoration:underline">Back to shop</a></div>`; return; }
       document.title = p.name + " | " + S.name;
-      let size = p.sizes.length === 1 ? p.sizes[0] : "", qty = 1;
+      let size = p.sizes.length === 1 ? p.sizes[0] : "", qty = 1, colour = p.colours[0] || "";
       root.innerHTML = `<div class="crumbs"><a href="shop.html">Shop</a> / <a href="shop.html?c=${encodeURIComponent(p.category)}">${esc(p.category)}</a></div>
         <div class="pdp">
           <div class="gallery"><div class="main"><img id="mainImg" src="${esc(p.images[0] || "images/logo.svg")}" alt="${esc(p.name)}"></div>
@@ -292,7 +306,7 @@
             <h1>${esc(p.name)}</h1>
             <div class="price">${p.was ? `<span class="now">${money(p.price)}</span><s>${money(p.was)}</s>` : money(p.price)}</div>
             <p class="desc">${esc(p.description)}</p>
-            ${p.colour ? `<div class="opt-label">Colour: <b style="color:var(--ink)">${esc(p.colour)}</b></div>` : ""}
+            ${p.colours.length > 1 ? `<div class="opt-label">Colour: <b style="color:var(--ink)" id="colName">${esc(colour)}</b></div><div class="sizes">${p.colours.map((c, i) => `<button class="size ${i ? "" : "on"}" data-colour="${esc(c)}" data-i="${i}">${esc(c)}</button>`).join("")}</div>` : p.colour ? `<div class="opt-label">Colour: <b style="color:var(--ink)">${esc(p.colour)}</b></div>` : ""}
             ${p.sizes.length ? `<div class="opt-label" style="margin-top:16px">Size</div><div class="sizes">${p.sizes.map(s => `<button class="size ${s === size ? "on" : ""}" data-size="${esc(s)}">${esc(s)}</button>`).join("")}</div>` : ""}
             <div class="buy"><div class="qty"><button id="qm" aria-label="Less">−</button><span id="qv">1</span><button id="qp" aria-label="More">+</button></div>
               <button class="btn btn-dark" id="add" ${p.inStock ? "" : "disabled"}>${p.inStock ? "Add to bag" : "Sold out"}</button></div>
@@ -302,15 +316,20 @@
         <section class="block" style="padding-top:20px"><div class="sec-head"><h2>You may also like</h2><a href="shop.html">View all</a></div>
           <div class="grid">${PRODUCTS.filter(x => x.id !== p.id).slice(0, 4).map(card).join("")}</div></section>`;
       root.onclick = e => {
-        const t = e.target.closest("[data-img]"), s = e.target.closest("[data-size]");
+        const t = e.target.closest("[data-img]"), s = e.target.closest("[data-size]"), c = e.target.closest("[data-colour]");
+        if (c) {
+          colour = c.dataset.colour; $("#colName").textContent = colour;
+          $$("[data-colour]").forEach(b => b.classList.toggle("on", b === c));
+          const src = p.images[+c.dataset.i]; if (src) { $("#mainImg").src = src; $$(".thumbs button").forEach(b => b.classList.toggle("on", b.dataset.img === src)); }
+        }
         if (t) { $("#mainImg").src = t.dataset.img; $$(".thumbs button").forEach(b => b.classList.toggle("on", b === t)); }
-        if (s) { size = s.dataset.size; $$(".size").forEach(b => b.classList.toggle("on", b === s)); }
+        if (s) { size = s.dataset.size; $$("[data-size]").forEach(b => b.classList.toggle("on", b === s)); }
       };
       $("#qm").onclick = () => { qty = Math.max(1, qty - 1); $("#qv").textContent = qty; };
       $("#qp").onclick = () => { qty++; $("#qv").textContent = qty; };
       $("#add").onclick = () => {
         if (p.sizes.length && !size) { toast("Please choose a size"); return; }
-        addToCart(p.id, size, qty);
+        addToCart(p.id, size, qty, colour);
       };
     }
   };

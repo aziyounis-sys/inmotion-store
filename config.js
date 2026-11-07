@@ -11,10 +11,11 @@ window.STORE = {
 
   // Your products Google Sheet (it must be shared as "Anyone with the link: Viewer").
   // If the sheet can't be read, the site uses products.csv in this folder instead.
-  sheetUrl: "https://docs.google.com/spreadsheets/d/1NVxmtqA0BLJTcEhE5yauCy7WQxn2BmpolPx_h7HeGdY/edit",
+  sheetUrl: "https://docs.google.com/spreadsheets/d/1MssTS5SEkED5tOgSFkTMvAr-DzWjhwkD32hxGs37o-I/edit",
 
   currency: "R",
-  email: "hello@inmotion.co.za",
+  // Contact email shown in the footer. Leave "" to hide.
+  email: "",
   // Paste your page links here. Leave "" to hide an icon.
   instagram: "",
   facebook: "",

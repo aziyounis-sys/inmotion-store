@@ -239,3 +239,8 @@ footer .slogan{color:var(--gold);font-family:var(--head);text-transform:uppercas
 .social a:hover{border-color:var(--gold);color:var(--gold)}
 .social svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6}
 .cat img,.card .ph img{object-position:center 25%}
+
+.done h4{font-family:var(--head);text-transform:uppercase;font-size:22px;color:var(--navy);margin-bottom:6px}
+.done p{font-size:14px;color:#3d4250;margin-bottom:16px}
+.btn-line-dark{border-color:var(--navy);color:var(--navy)}
+.btn-line-dark:hover{background:var(--navy);color:var(--ivory)}
