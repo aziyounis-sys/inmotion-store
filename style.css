@@ -233,3 +233,9 @@ footer .slogan{color:var(--gold);font-family:var(--head);text-transform:uppercas
 
 /* products without a photo yet show the logo */
 .card .ph img[src="images/logo.svg"],.gallery .main img[src="images/logo.svg"],.line img[src="images/logo.svg"],.results img[src="images/logo.svg"]{object-fit:contain;padding:22%}
+
+.social{display:flex;gap:10px;margin-top:18px}
+.social a{width:40px;height:40px;border:1px solid #33405c;border-radius:50%;display:grid;place-items:center;color:var(--ivory)}
+.social a:hover{border-color:var(--gold);color:var(--gold)}
+.social svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6}
+.cat img,.card .ph img{object-position:center 25%}

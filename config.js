@@ -15,7 +15,9 @@ window.STORE = {
 
   currency: "R",
   email: "hello@inmotion.co.za",
-  instagram: "https://instagram.com/",
+  // Paste your page links here. Leave "" to hide an icon.
+  instagram: "",
+  facebook: "",
   location: "Cape Town, South Africa",
 
   // Delivery options shown at checkout. price 0 = free.

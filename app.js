@@ -106,6 +106,16 @@
   };
   const waLink = text => `https://wa.me/${(S.whatsapp || "").replace(/\D/g, "")}?text=${encodeURIComponent(text)}`;
 
+  function social() {
+    const ic = {
+      instagram: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+      facebook: '<svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8.5a.5.5 0 0 1 .5-.5Z"/></svg>',
+      whatsapp: '<svg viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1c-1-.4-1.6-1-2-2l1-1-1-2z"/></svg>'
+    };
+    const links = [["instagram", S.instagram, "Instagram"], ["facebook", S.facebook, "Facebook"], ["whatsapp", waLink("Hi In Motion!"), "WhatsApp"]].filter(x => x[1]);
+    return `<div class="social">${links.map(([k, u, t]) => `<a href="${esc(u)}" target="_blank" rel="noopener" aria-label="${t}">${ic[k]}</a>`).join("")}</div>`;
+  }
+
   function layout() {
     const here = location.pathname.split("/").pop() + location.search;
     const nav = [["shop.html", "Shop all"], ["shop.html?g=Men", "Men"], ["shop.html?g=Women", "Women"], ["shop.html?c=Accessories", "Accessories"], ["index.html#club", "The Club"]];
@@ -134,9 +144,9 @@
         <div class="foot">
           <div><a class="brand" href="index.html"><img src="images/logo.svg" alt=""><span style="color:#fff">${esc(S.name)}</span></a>
             <div class="slogan">${esc(S.slogan)}</div>
-            <p>A fitness, sporting movement and premium athletic wear brand from ${esc(S.location)}.</p></div>
+            <p>A fitness, sporting movement and premium athletic wear brand from ${esc(S.location)}.</p>${social()}</div>
           <div><h4>Shop</h4><ul><li><a href="shop.html">Shop all</a></li><li><a href="shop.html?g=Men">Men</a></li><li><a href="shop.html?g=Women">Women</a></li><li><a href="shop.html?c=Hoodies">Hoodies</a></li><li><a href="shop.html?c=Accessories">Accessories</a></li></ul></div>
-          <div><h4>Help</h4><ul><li><a href="${waLink("Hi In Motion, I have a question.")}" target="_blank" rel="noopener">WhatsApp us</a></li><li><a href="mailto:${esc(S.email)}">${esc(S.email)}</a></li><li><a href="${esc(S.instagram)}" target="_blank" rel="noopener">Instagram</a></li><li>Sizes & exchanges: message us</li></ul></div>
+          <div><h4>Help</h4><ul><li><a href="${waLink("Hi In Motion, I have a question.")}" target="_blank" rel="noopener">WhatsApp us</a></li><li><a href="mailto:${esc(S.email)}">${esc(S.email)}</a></li>${S.instagram ? `<li><a href="${esc(S.instagram)}" target="_blank" rel="noopener">Instagram</a></li>` : ""}${S.facebook ? `<li><a href="${esc(S.facebook)}" target="_blank" rel="noopener">Facebook</a></li>` : ""}<li>Sizes & exchanges: message us</li></ul></div>
           <div><h4>Join the movement</h4><p>New drops and Thursday sessions, first.</p>
             <form class="news" id="news"><input type="email" required placeholder="Your email"><button>Join</button></form></div>
         </div>
