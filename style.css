@@ -254,3 +254,15 @@ footer .slogan{color:var(--gold);font-family:var(--head);text-transform:uppercas
 
 img.wide{object-fit:contain!important;background:var(--sand)}
 .card .ph img.wide,.gallery .main img.wide{padding:0}
+
+/* the whole bag scrolls as one, so checkout is always reachable on short screens */
+.drawer{display:block;overflow-y:auto;overscroll-behavior:contain}
+.drawer-head{position:sticky;top:0;background:var(--ivory);z-index:2}
+.drawer-body{overflow:visible}
+.toast{bottom:auto;top:84px}
+.thumbs{flex-wrap:wrap}
+.thumbs button{width:72px}
+.gallery,.info,.pdp>*{min-width:0}
+
+.details{margin:10px 0 2px 18px;display:grid;gap:6px}
+.details li{list-style:disc}

@@ -11,7 +11,7 @@ window.STORE = {
 
   // Your products Google Sheet (it must be shared as "Anyone with the link: Viewer").
   // If the sheet can't be read, the site uses products.csv in this folder instead.
-  sheetUrl: "https://docs.google.com/spreadsheets/d/1_mvHybBrWin0nrUURWg13KVfBNwsbZjMQLYzUz1VeYw/edit",
+  sheetUrl: "https://docs.google.com/spreadsheets/d/1yMeEiAmuifb6iD3aAjwcUj_-ifJ950OipsQFpT0SUvU/edit",
 
   currency: "R",
   // Contact email shown in the footer. Leave "" to hide.

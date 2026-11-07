@@ -63,7 +63,8 @@
       tag: r.tag || "", featured: yes(r.featured),
       inStock: r.in_stock === undefined || r.in_stock === "" ? true : yes(r.in_stock),
       hidden: yes(r.hidden),
-      description: r.description || ""
+      description: r.description || "",
+      details: (r.details || "").split("|").map(s => s.trim()).filter(Boolean)
     };
   }
 
@@ -313,7 +314,7 @@
             <div class="buy"><div class="qty"><button id="qm" aria-label="Less">−</button><span id="qv">1</span><button id="qp" aria-label="More">+</button></div>
               <button class="btn btn-dark" id="add" ${p.inStock ? "" : "disabled"}>${p.inStock ? "Add to bag" : "Sold out"}</button></div>
             <a class="btn btn-wa" style="width:100%" target="_blank" rel="noopener" href="${waLink(`Hi In Motion, I have a question about the ${p.name}.`)}">Ask us on WhatsApp</a>
-            <div class="perks"><div><b>Delivery:</b> collect in Cape Town or courier anywhere in South Africa.</div><div><b>Free delivery</b> on orders over ${money(S.freeDeliveryOver || 0)}.</div><div><b>Wrong size?</b> Message us and we will sort it out.</div></div>
+            <div class="perks">${p.details.length ? `<div><b>Fabric & quality</b><ul class="details">${p.details.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>` : ""}<div><b>Delivery:</b> collect in Cape Town or courier anywhere in South Africa.</div><div><b>Free delivery</b> on orders over ${money(S.freeDeliveryOver || 0)}.</div><div><b>Wrong size?</b> Message us and we will sort it out.</div></div>
           </div></div>
         <section class="block" style="padding-top:20px"><div class="sec-head"><h2>You may also like</h2><a href="shop.html">View all</a></div>
           <div class="grid">${PRODUCTS.filter(x => x.id !== p.id).slice(0, 4).map(card).join("")}</div></section>`;
