@@ -244,3 +244,10 @@ footer .slogan{color:var(--gold);font-family:var(--head);text-transform:uppercas
 .done p{font-size:14px;color:#3d4250;margin-bottom:16px}
 .btn-line-dark{border-color:var(--navy);color:var(--navy)}
 .btn-line-dark:hover{background:var(--navy);color:var(--ivory)}
+
+.women{background:var(--sand)}
+.women-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.women-grid img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 20%}
+.women h2{font-size:clamp(36px,4.6vw,60px);color:var(--navy)}
+.women p{color:#3d4250;margin:18px 0 26px;max-width:460px}
+@media (max-width:760px){.women-grid{grid-template-columns:1fr;gap:24px}}

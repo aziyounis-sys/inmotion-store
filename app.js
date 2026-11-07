@@ -282,6 +282,7 @@
       const draw = () => {
         $("#chips").innerHTML = cats.map(c => `<button class="chip ${c === cat ? "on" : ""}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
         let list = PRODUCTS.filter(p => (cat === "All" || p.category === cat) && (!g || p.gender === g || p.gender === "Unisex"));
+        if (g) list = [...list.filter(p => p.gender === g), ...list.filter(p => p.gender !== g)];
         if (sort === "low") list = [...list].sort((a, b) => a.price - b.price);
         if (sort === "high") list = [...list].sort((a, b) => b.price - a.price);
         $("#shopGrid").innerHTML = list.length ? list.map(card).join("") : `<p class="msg" style="grid-column:1/-1">Nothing here yet. New drops coming soon.</p>`;
