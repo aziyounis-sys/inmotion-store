@@ -252,7 +252,7 @@ footer .slogan{color:var(--gold);font-family:var(--head);text-transform:uppercas
 .women p{color:#3d4250;margin:18px 0 26px;max-width:460px}
 @media (max-width:760px){.women-grid{grid-template-columns:1fr;gap:24px}}
 
-img.wide{object-fit:contain!important;background:var(--sand)}
+.ph img.wide,.main img.wide,.line img.wide,.results img.wide,.thumbs img.wide{object-fit:contain!important;background:var(--sand)}
 .card .ph img.wide,.gallery .main img.wide{padding:0}
 
 /* the whole bag scrolls as one, so checkout is always reachable on short screens */
